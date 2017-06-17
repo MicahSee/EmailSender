@@ -1,0 +1,6 @@
+An app to schedule emails using a web interface.
+
+Install the following modules:
+flask
+celery
+schedule
