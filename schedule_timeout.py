@@ -1,6 +1,7 @@
 import time
 import signal
 import schedule
+from functools import wraps
 
 class Timeout(object):
     class Timeout(Exception):
@@ -21,13 +22,17 @@ class scheduler(object):
     def __init__(self,quantity,delay):
         self.quantity = int(quantity)
         self.delay = int(delay) * 60
-    def schedule_email(self,email_object):
-        while self.quantity > 0:
-            try:
-                with Timeout(30):
-                    schedule.every(self.delay).minutes.do(email_object.send())
-                    self.quantity -= 1
-            except Timeout.Timeout:
-                return "There was a timeout error"
-            except:
-                return "There was some other error"
+    def schedule_email(self,function):
+        @wraps(function)
+        def wrapper(*args,**kwargs):
+            while self.quantity > 0:
+                try:
+                    with Timeout(30):
+                        function()
+                        self.quantity -= 1
+                        time.sleep(self.delay)
+                except Timeout.Timeout:
+                    return "There was a timeout error"
+                except:
+                    return "There was some other error"
+        return wrapper
