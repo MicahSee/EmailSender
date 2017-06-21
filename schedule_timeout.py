@@ -19,7 +19,7 @@ import signal
 class scheduler(object):
     def __init__(self,quantity,delay,obj):
         self.quantity = int(quantity)
-        self.delay = int(delay) * 60
+	self.delay = int(delay)    
         self.obj = obj
     def schedule_email(self):
         while self.quantity > 0:
