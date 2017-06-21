@@ -22,7 +22,6 @@ def queue(obj):
 @app.route('/')
 def index():
     if request.args.get('auth') == 'gmail':
-        webbrowser.open('https://myaccount.google.com/u/1/lesssecureapps')
         return render_template('gmail.html')
     else:
         return render_template('index.html')
