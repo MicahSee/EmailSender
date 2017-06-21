@@ -4,10 +4,11 @@ from email_sender import email_template
 from schedule_timeout import scheduler
 from celery import Celery
 import webbrowser
+import os 
 
 app = Flask(__name__)
-app.config['broker_url'] = 'amqp://'
-app.config['result_backend'] = 'amqp://'
+app.config['broker_url'] = os.environ['REDIS_URL']
+app.config['result_backend'] = os.environ['REDIS_URL']
 app.config['task_serializer'] = 'pickle'
 app.config['accept_content'] = ['pickle']
 celery_app = Celery(app.name, broker=app.config['broker_url'])
@@ -60,4 +61,5 @@ def post_gmail():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
