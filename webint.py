@@ -4,7 +4,7 @@ from email_sender import email_template
 from schedule_timeout import scheduler
 from celery import Celery
 import webbrowser
-import os 
+import os
 
 app = Flask(__name__)
 app.config['broker_url'] = os.environ['REDIS_URL']
