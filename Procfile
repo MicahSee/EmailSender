@@ -1,2 +1,2 @@
 web: uwsgi uwsgi.ini
-worker: celery worker -A webint.celery_app
+worker: celery worker -A tasks.celery_app
