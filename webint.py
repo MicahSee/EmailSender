@@ -1,23 +1,10 @@
 from flask import Flask, request, render_template, redirect, url_for
-import json
 from email_sender import email_template
 from schedule_timeout import scheduler
 from celery import Celery
-import webbrowser
-import os
+from tasks import queue
 
 app = Flask(__name__)
-app.config['broker_url'] = os.environ['REDIS_URL']
-app.config['result_backend'] = os.environ['REDIS_URL']
-app.config['task_serializer'] = 'pickle'
-app.config['accept_content'] = ['pickle']
-celery_app = Celery(app.name, broker=app.config['broker_url'])
-celery_app.conf.update(app.config)
-
-@celery_app.task #move to execution by celery worker first
-def queue(obj):
-    obj.schedule_email()
-    return
 
 @app.route('/')
 def index():
