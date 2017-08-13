@@ -1,10 +1,11 @@
 from flask import Flask, request, render_template, redirect, url_for
 from email_sender import email_template
 from schedule_timeout import scheduler
-from celery import Celery
 from tasks import queue
+import os
 
 app = Flask(__name__)
+
 
 @app.route('/')
 def index():
@@ -12,6 +13,7 @@ def index():
         return render_template('gmail.html')
     else:
         return render_template('index.html')
+
 
 @app.route('/post', methods=["POST"])
 def post():
@@ -21,12 +23,13 @@ def post():
     number_of_emails = request.form['number_of_emails']
     delay_time = request.form['delay']
 
-    email_object = email_template(recipient_email,subject,email_body)
-    schedule_object = scheduler(number_of_emails,delay_time,email_object)
+    email_object = email_template(recipient_email, subject, email_body)
+    schedule_object = scheduler(number_of_emails, delay_time, email_object)
 
     queue.delay(schedule_object)
 
     return redirect(url_for('index'))
+
 
 @app.route('/gmail_post', methods=["POST"])
 def post_gmail():
@@ -38,8 +41,9 @@ def post_gmail():
     number_of_emails = request.form['number_of_emails']
     delay_time = request.form['delay']
 
-    email_object = email_template(recipient_email,subject,email_body,from_email=gmail_email,from_password=gmail_password)
-    schedule_object = scheduler(number_of_emails,delay_time,email_object)
+    email_object = email_template(
+        recipient_email, subject, email_body, from_email=gmail_email, from_password=gmail_password)
+    schedule_object = scheduler(number_of_emails, delay_time, email_object)
 
     queue.delay(schedule_object)
 
@@ -47,5 +51,4 @@ def post_gmail():
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=80)

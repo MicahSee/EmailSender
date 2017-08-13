@@ -2,10 +2,10 @@ from smtplib import SMTP
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 
-smtp_server = 'smtp.gmail.com'
+smtp_server = 
 port = 587
-default_from_email = 'pyautomaticemailgenerator@gmail.com'
-default_email_pass = 'PythonEmail123'
+default_from_email = 
+default_email_pass = 
 
 class email_template(object):
     def __init__(self,recipient,subject,body,**kwargs):

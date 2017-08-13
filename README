@@ -1,0 +1,6 @@
+Start a worker using the tasks.py file. Then start the flask app.
+**make sure to configure the tasks.py file and the email_sender file.
+
+Python Version: 2.7
+Requirements: flask, pickle, celery, redis or rabbitmq (some kind of message broker)
+
